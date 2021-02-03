@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  mysql:
+    image: 'bitnami/mysql:5.7'
+    ports:
+      - '3307:3306'
+    volumes:
+      - 'mysql_57_data:/bitnami/mysql/data'
+    environment:
+      - MYSQL_ROOT_USER=books_root
+      - MYSQL_ROOT_PASSWORD=books_root
+      - MYSQL_DATABASE=books
+      - MYSQL_USER=books_user
+      - MYSQL_PASSWORD=123books # ... :)
+    healthcheck:
+      test: bash -c "[ -f /bitnami/mysql/.mysql_initialized ]" && mysql -uMYSQL_USER -pMYSQL_PASSWORD MYSQL_DATABASE --silent --execute "SHOW TABLES;"
+
+volumes:
+  mysql_57_data:
+    driver: local
